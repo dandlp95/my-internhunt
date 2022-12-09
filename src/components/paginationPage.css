@@ -1,0 +1,32 @@
+.paginationcss {
+  margin-top:-1rem;
+}
+
+.paginationcss ul {
+  list-style: none;
+  margin: 1rem auto;
+  padding-left: 1.2rem; 
+ }
+
+.paginationcss ul li {
+  display: inline;
+  
+}
+
+.paginationcss ul button {
+  border: 1px solid lightgrey;
+  margin-right:0.5rem;
+  background-color: white;
+  cursor: pointer; 
+  padding: 0.5rem 0.8rem; 
+  border-radius: 7px;
+}
+
+.paginationcss ul button:hover{
+    background-color: lightgrey;
+}
+
+.paginationcss ul .active button{
+    background-color: #0b3954;
+    color: white;
+}

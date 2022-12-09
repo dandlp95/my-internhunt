@@ -1,0 +1,139 @@
+.account-portal-main {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+.admin-status{
+  font-weight: 600;
+  margin-top:0.5rem;
+}
+
+.account-portal-main .account-info {
+  background-color: white;
+  height: fit-content;
+  width: fit-content;
+  margin-top: 1rem;
+  border-radius: 7px;
+  margin-left: 0.8rem;
+}
+
+.account-portal-main .account-info {
+  padding: 0.5rem 1rem;
+}
+
+.account-info .account-info-flexbox {
+  display: flex;
+}
+
+.account-info div p {
+  font-size: 0.75rem;
+  padding-left: 0.75rem;
+}
+
+.account-info div {
+  text-align: start;
+}
+.account-portal-main .buttons, .ban-button button{
+  margin-top: 0.5rem;
+}
+
+.account-portal-main .buttons button, .ban-button button{
+  border: 1px solid lightgrey;
+  padding: 0.25rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  background-color: #edeff1;
+}
+
+.account-portal-main .buttons button:first-child {
+  margin-right: 0.5rem;
+}
+
+.account-portal-main .posts-section,
+.account-portal-main .comments-section {
+  background-color: white;
+  padding: 1rem 2rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+.account-portal-main .posts-section hr,
+.account-portal-main .comments-section hr{
+  margin-top: -1rem;
+}
+
+.account-portal-main .posts-list, .account-portal-main .comments-list{
+  margin-top: 2rem;
+}
+
+.account-portal-main .postpreview{
+  display: flex;
+}
+
+.account-portal-main .postpreview .post-content{
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.account-portal-main .postpreview button{
+  display:block;
+}
+
+.account-portal-main a{
+  text-decoration: none;
+  color: black;
+}
+
+.account-portal-main .post-metadata{
+  color: grey;
+  font-size: 0.75rem;
+  margin-bottom: -1rem;
+}
+
+.account-portal-main .post-link div{
+  margin-bottom: -1rem;
+}
+
+.account-portal-main .voting-interface button{
+  display: block;
+  background-color: white;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.account-portal-main .voting-interface .vote-number{
+  margin-left: 0.75rem;
+    font-weight: bold;
+}
+
+.account-portal-main .postpreview{
+  margin-top: 2.5rem;
+}
+
+.account-portal-main .comment-main .comment-info-container{
+  display:flex;
+}
+
+.account-portal-main .comment-main .comment-info{
+  margin-left:0.5rem;
+}
+
+.account-portal-main .comment-main .comment-info-container .comment-info{
+  font-size:0.8rem;
+}
+
+.account-portal-main .comment-main .comment-info-container{
+  color: grey;
+}
+
+.account-portal-main .comment-main .comment-content{
+  margin-top: -0.7rem;
+}
+
+.account-portal-main .comment-main .comment-content p{
+  margin-bottom: 2rem;
+  border: 1px dashed #e5e5e5;
+  border-radius: 7px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+}

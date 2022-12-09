@@ -1,0 +1,28 @@
+.buttonComponent input{
+  display: block;
+  background-color: #0b3954;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 25px;
+  box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  /* font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; */
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 10px 16px;
+  text-align: center;
+  font-family: "verdana";
+  width: 8rem;
+}
+
+.buttonComponent input:hover{
+  background-color: #5fa0d0;
+}
+
+.buttonComponent input:active{
+  background-color: #0b3954;
+  box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}

@@ -1,0 +1,42 @@
+.majors-main .majors-grid {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  width: 100%;
+  margin: 1rem auto;
+}
+
+.majors-grid-two{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.majors-grid-two .card-link-container{
+    padding: 1rem 0rem;
+}
+
+.majors-grid .department-options {
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+  background-color: white;
+  width: 60%;
+  margin: 1.3rem auto;
+  height: fit-content;
+  padding-bottom: 1rem;
+}
+
+.department-options h3 {
+  padding: 0 1rem;
+}
+
+.department-option {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  padding: 0 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.majors-grid .card-link-container a{
+    text-decoration: none;
+    color: black;
+}

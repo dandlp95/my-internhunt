@@ -1,0 +1,33 @@
+.rules {
+  border: 1px solid lightgrey;
+  border-radius: 15px;
+  background-color: #f5f4f3;
+  width: 75%;
+  margin: 4rem 2rem;
+  font-size: 0.8rem;
+}
+
+.rules section {
+  padding: 1rem;
+}
+
+.rules .section-header {
+  display: flex;
+  align-items: center;
+}
+
+.rules .section-header h3 {
+  margin-left: 0.7rem;
+}
+
+.rules p {
+  font-weight: 500;
+}
+
+.guidelines-reference {
+  padding: 1rem;
+}
+
+.post-page-main .rules{
+    margin-top: 2rem;
+}

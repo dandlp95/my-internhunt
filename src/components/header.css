@@ -1,0 +1,77 @@
+.header-component{
+  position:fixed;
+  width: 100%;
+  border: 1px solid lightgrey;
+}
+.header-component header {
+  display: flex;
+  font-family: "verdana";
+  background-color: white;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.searchBar input {
+  width: 70%;
+  height: 2rem;
+  font-family: "verdana";
+  font-size: 1rem;
+  border-color: #d3d3d3;
+  margin: 1.5rem 0;
+  border-radius: 15px;
+  border: 0;
+  background-color: #f5f4f3;
+  padding-left: 2.3rem;
+}
+
+.searchBar {
+  justify-content: center;
+}
+
+.logo {
+  padding-right: 2rem;
+}
+
+.searchBar {
+  flex-grow: 1;
+}
+
+.header-about,
+.header-account,
+.sign-out-div {
+  padding: 0 1rem;
+}
+
+.header-guidelines {
+  padding: 0 3rem;
+}
+
+.header-account {
+  min-width: 150px;
+}
+
+.sign-out-div button {
+  min-width: 100px;
+  background: none !important;
+  border: none;
+  color: black;
+  cursor: pointer;
+  font-size: 0.9rem !important;
+  font-family: "verdana";
+}
+
+.header-component a {
+  color: black;
+  text-decoration: none;
+}
+
+.header-component .search-icon{
+  position:absolute;
+  margin-top: 2.1rem;
+  font-weight: lighter;
+  margin-left:1rem;
+}
+
+.header-component .search-icon .magnifying-glass{
+  color: grey;
+}

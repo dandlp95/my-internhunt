@@ -1,0 +1,117 @@
+.loginComponent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.loginFormDiv {
+  background-color: #f8f8f8;
+  border-radius: 80px;
+  position: absolute;
+  width: 800px;
+  height: fit-content;
+  aspect-ratio: 1.5/1;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 40px;
+  box-shadow: 0 5px 10px grey;
+  text-align: center;
+  padding: 1rem;
+}
+
+.loginComponent {
+  margin: 0 0 0 0;
+}
+
+.loginComponent form {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  font-size: 1.5rem;
+  margin-left: 4rem;
+}
+
+.loginComponent input {
+  display: block;
+}
+
+.loginComponent input[type="text"] {
+  margin-top: 1rem;
+  width: 80%;
+  height: 2rem;
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: black;
+  padding: 1rem;
+  font-size: 2rem;
+  font-family: Consolas;
+}
+
+.loginComponent label {
+  padding-top: 2rem;
+  display: block;
+}
+
+.loginComponent input[type="submit"] {
+  display: block;
+  background-color: #002400;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: Consolas;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.loginComponent input[type="submit"]:active {
+  background-color: #7eb09b;
+  box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}
+
+.register-here {
+  margin-top: 5rem;
+}
+
+.closeBtn {
+  position: absolute;
+  text-decoration: none;
+  color: black;
+  margin-top: -2rem;
+  margin-left: 44rem;
+  cursor: pointer;
+}
+
+.loginFormDiv h2 {
+  margin-left: -20rem;
+  margin-top: 3rem;
+}
+
+.google-btn {
+  margin-top: 0.5rem;
+}
+
+.forgot-password-option {
+  margin-top: 1rem;
+}
+.google-btn-container,
+.forgot-password-option {
+  text-align: left;
+}
+.google-btn-container {
+  margin-top: 2rem;
+}

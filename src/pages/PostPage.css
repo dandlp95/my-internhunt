@@ -1,0 +1,278 @@
+.post-page-main .main-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.post-main {
+  background-color: white;
+  border: rgb(120, 124, 126);
+  padding: 1rem 1rem 0rem 1rem;
+  margin-top: 2rem;
+  border-radius: 8px;
+}
+
+.post-main .posted-by-section {
+  margin-bottom: -1rem;
+  color: rgb(120, 124, 126);
+  font-size: 0.85rem;
+}
+
+.post-main .posted-by-section a {
+  text-decoration: inherit;
+  color: rgb(120, 124, 126);
+}
+
+.post-main .post-section h2 {
+  font-weight: 400;
+  font-size: 1.5rem;
+}
+
+.grid-column-2 .post-main {
+  display: flex;
+}
+
+.post-page-main .grid-column-2 .flex-box-2 {
+  flex-grow: 1;
+  margin-left: 1rem;
+  margin-top: -1rem;
+}
+
+.post-page-main .post-main .owner-options-dots {
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.post-page-main .post-main .post-owner-options {
+  position: absolute;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px 0;
+  border: 1px solid #edeff1;
+  margin-top: -1.2rem;
+  text-align: center;
+}
+
+.post-page-main .post-main .post-owner-options div:hover {
+  color: black;
+  background-color: rgba(1, 73, 128, 0.2);
+}
+
+.post-page-main .post-main .post-owner-options div {
+  display: block;
+  width: 4rem;
+  padding: 0.4rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.post-page-main .post-main .post-owner-options div:first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+.post-page-main .post-main .post-owner-options .second {
+  border-radius: 0 0 10px 10px;
+}
+
+.post-page-main .post-lower-section {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  color: #878a8c;
+}
+
+.post-page-main .post-lower-section div:nth-child(1) {
+  flex-grow: 1;
+}
+
+.post-page-main .comment-number {
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.post-page-main
+  .post-lower-section
+  .owner-options-container
+  .owner-options-dots
+  .dots {
+  margin-left: auto;
+  margin-right: 0;
+  font-size: 30px;
+}
+
+.post-page-main .flex-box-1 .voting-interface button {
+  display: block;
+  background-color: white;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.post-page-main .vote-number {
+  margin-left: 0.75rem;
+  font-weight: bold;
+}
+
+.post-page-main .comment-info-section {
+  display: flex;
+  font-weight: 700;
+}
+
+.post-page-main .post-section textarea {
+  width: 55rem;
+  height: 10rem;
+  border: 1px solid #edeff1;
+  border-radius: 5px;
+  line-height: 1.3rem;
+  padding: 0.5rem;
+}
+.edit-cancel-buttons {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.edit-cancel-buttons button {
+  padding: 0.4rem 2rem;
+  border: 1px solid #b2b2b2;
+  border-radius: 17px;
+  cursor: pointer;
+  font-weight: 700;
+  color: white;
+  background-color: #014980;
+  width: 7rem;
+}
+
+.edit-cancel-buttons button:first-child {
+  margin-right: 1rem;
+}
+
+.post-page-main .comment-section-container {
+  background-color: white;
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: rgb(120, 124, 126);
+}
+
+.post-page-main
+  .comment-section-container
+  .input-interface-main
+  .comment-input
+  textarea {
+  width: 95%;
+  height: 7rem;
+  border-radius: 5px;
+  padding: 0.5rem 0.5rem;
+  line-height: 1rem;
+}
+
+.post-page-main .input-interface-main button {
+  padding: 0.4rem 2rem;
+  border: 1px solid #b2b2b2;
+  border-radius: 17px;
+  cursor: pointer;
+  font-weight: 700;
+  color: white;
+  background-color: #014980;
+}
+
+.post-page-main .input-interface-main button[disabled] {
+  background-color: #898989;
+  color: lightgray;
+}
+
+.post-page-main .input-interface-main {
+  margin-bottom: 3rem;
+}
+
+.post-page-main .comment-main .comment-owner-data a {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.post-page-main .comment-owner-data span {
+  color: rgb(120, 124, 126);
+  font-size: 0.85rem;
+}
+
+.post-page-main .comment-main p {
+  margin-top: 0.3rem;
+}
+
+.post-page-main .comment-main {
+  display: flex;
+}
+
+.post-page-main .comment-main .flexbox-1 button {
+  display: block;
+  background-color: white;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.post-page-main .comment-edit-delete-div button,
+.post-page-main .comment-main .comment-save-div button {
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  color: #878a8c;
+  background-color: white;
+}
+
+.post-page-main .comment-edit-delete-div button:hover,
+.post-page-main .comment-main .comment-save-div button:hover {
+  background-color: rgba(131, 131, 131, 0.5);
+}
+
+.post-page-main .comment-edit-delete-div .button-flexbox {
+  display: flex;
+}
+
+.post-page-main .comment-main .comment-input-div textarea {
+  width: 50rem;
+  height: 7rem;
+  border-radius: 7px;
+  padding: 0.5rem 0.7rem;
+}
+
+.post-page-main .sort-ui p {
+  color: #014980;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.sort-options {
+  position: absolute;
+  background: white;
+  border: 1px solid #edeff1;
+  width: 6rem;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0;
+  margin-top: -0.5rem;
+}
+
+.display-options-ui,
+.sort-options .options div {
+  cursor: pointer;
+}
+
+.sort-options > div {
+  width: 100%;
+  text-align: center;
+}
+
+.post-page-main .sort-ui .options p {
+  padding: 0.2rem 0rem;
+  margin: 0.2rem 0;
+  color: #878a8c;
+}
+
+.sort-options .options div:hover {
+  color: black;
+  background-color: rgba(1, 73, 128, 0.2);
+}
+
+.sort-options .active p {
+  color: #286799 !important;
+  font-weight: 700 !important;
+}

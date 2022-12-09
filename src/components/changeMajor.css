@@ -1,0 +1,36 @@
+.change-major-ui-container {
+  background-color: white;
+  width: 50rem;
+  margin: 1rem auto;
+  padding: 0.2rem 1rem;
+  border-radius: 7px;
+  border: 1px;
+  padding-bottom: 1rem;
+}
+
+.change-major-ui-container .change-major-title hr {
+  margin-top: -1rem;
+}
+
+.change-major-ui-container input {
+  width: 35%;
+  height: 1.5rem;
+  border: 1px solid lightgrey;
+  border-radius: 7px;
+}
+
+.change-major-input{
+    margin-top:2rem;
+}
+
+.change-major-input button{
+    margin-top: 2rem;
+    background-color: #014980;
+    color: white;
+    font-weight: 500;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-right: 1rem;
+}

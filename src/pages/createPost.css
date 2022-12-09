@@ -1,0 +1,101 @@
+.create-post-page {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  margin-top: 2rem;
+}
+
+.create-post-form {
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+  background-color: #f5f4f3;
+  padding: 1rem 1.5rem;
+}
+
+.title-input-div input {
+  height: 2rem;
+}
+
+.text-input-div textarea {
+  height: 10rem;
+  margin-top: 1rem;
+  font-family: "verdana";
+}
+
+.text-input-div textarea,
+.title-input-div input {
+  border: 2px solid lightgrey;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.create-post-main .buttonComponent {
+  margin-top: 2rem;
+}
+
+#button-component-uq-css input {
+  width: 19rem;
+}
+
+.post-categories-div {
+  border: 1px solid lightgrey;
+  border-radius: 15px;
+  width: 10rem;
+  padding: 1rem;
+  background-color: white;
+  box-shadow: 0 2px 4px 0;
+}
+
+.post-categories-div label {
+  display: block;
+  line-height: 2rem;
+}
+
+.post-categories-div {
+  vertical-align: baseline;
+  position: absolute;
+  margin-top: -12rem;
+  margin-left: 5rem;
+}
+
+.post-categories-div button {
+  padding: 0.5rem 2rem;
+  border: 1px solid lightgrey;
+  border-radius: 15px;
+  font-weight: bold;
+  background-color: #0b3954;
+  color: white;
+  margin: 1.25rem 1.6rem;
+}
+
+.post-categories-div button[disabled] {
+  background-color: #898989;
+  color: lightgray;
+}
+
+.select-major-main button {
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  margin-left: 1rem;
+  border: 2px solid lightgrey;
+  font-weight: bold;
+  background-color: #0b3954;
+  color: white;
+}
+
+.company-name-div {
+  margin-top: 4rem;
+}
+
+.create-post-main .select-major-div {
+  margin-top: 2rem;
+}
+
+.select-major-main input,
+.company-name-div input,
+.select-state select {
+  width: 20rem;
+  height: 2rem;
+  border-radius: 7px;
+  border: 2px solid lightgrey;
+  margin-top: 0.75rem;
+}
