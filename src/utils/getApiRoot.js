@@ -1,5 +1,5 @@
 export const getApiRoot = () => {
-    let apiRoot = "http://localhost:8080"
+    let apiRoot = "https://internhunt-backend.herokuapp.com"
     return apiRoot
 }
 
