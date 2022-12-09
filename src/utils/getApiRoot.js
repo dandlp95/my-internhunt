@@ -1,20 +1,13 @@
 export const getApiRoot = () => {
-    let apiRoot = "https://internhunt-backend.herokuapp.com"
-    return apiRoot
+    if(window.location.hostname.includes("heroku")) return "https://internhunt-backend.herokuapp.com"
+    else return "http://localhost:8080"
 }
 
-// export const getApiRoot = () => {
-//     const hashTag = window.location.hash;
-//     let apiRoot = hashTag.includes('#remote')?'https://rancher-dev-bff.cit.byui.edu':"http://localhost:5000";
-//     hashTag === 'localhost'
-  
-//     if (window.location.hostname.includes("rancher-vmfrontend-dev")) {
-//       apiRoot = "https://rancher-dev-bff.cit.byui.edu";
-//     } else if (window.location.hostname.includes("rancher-vmfrontend-test")) {
-//       apiRoot = "https://rancher-test-bff.cit.byui.edu";
-//     } else if (window.location.hostname.includes("rancher-vmfrontend-prod")) {
-//       apiRoot = "https://rancher-prod-bff.cit.byui.edu";
-//     }
-//     return apiRoot;
-//   };
-  
+/* DELETE THIS */
+
+// "scripts": {
+//     "start": "node --max_old_space_size=2560 node_modules/.bin/react-scripts start",
+//     "build": "node --max_old_space_size=2560 node_modules/.bin/react-scripts build",
+//     "test": "react-scripts test",
+//     "eject": "react-scripts eject"
+//   },
