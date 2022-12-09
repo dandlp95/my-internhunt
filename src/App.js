@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import FailMessage from "./components/failMessage";
 import { isAuth } from "../src/utils/isLoggedIn";
 import Login from "./components/login";
+import validateEmail from "./utils/isEmail";
 
 const App = () => {
   const [email, setEmail] = useState("");
@@ -39,33 +40,53 @@ const App = () => {
         headers: { "Content-type": "application/json" },
       };
       const response = await fetch(getApiRoot() + "/majors", options);
-      const majors = await response.json();
-
-      setMajorsList(majors);
+      if (response.ok) {
+        const majors = await response.json();
+        setMajorsList(majors);
+      }
     };
     getMajors();
-  }, []); // Use this use effect to get a list of majors and add it to the drop down menu
+  }, []);
+
+  const validateForm = () => {
+    if (!email) return "Please fill out email input";
+    if (!validateEmail(email)) return "Please enter a valid email address";
+    if (!password) return "Please input a password";
+    if (!firstName) return "Please input your first name";
+    if (!lastName) return "Please input your last name";
+    if (!major) return "Please input your major.";
+
+    return "valid";
+  };
 
   const handleRegister = async () => {
-    const options = {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ email, password, firstName, lastName, major }),
-    };
-    const response = await fetch(getApiRoot() + "/users/add", options);
-
-    if (response.ok) {
-      const jsonResponse = await response.json();
-      localStorage.setItem("userData", JSON.stringify({
-        userId: jsonResponse.userId,
-        jwt: jsonResponse.token,
-        major: jsonResponse.major
-      }));
-      const userMajor = jsonResponse.major;
-
-      navigate(`/posts?major=${userMajor}`);
+    const validateFormResult = validateForm();
+    if (validateFormResult !== "valid") {
+      setFail(validateFormResult);
     } else {
-      setFail(true);
+      const options = {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ email, password, firstName, lastName, major }),
+      };
+      const response = await fetch(getApiRoot() + "/users/add", options);
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            userId: jsonResponse.userId,
+            jwt: jsonResponse.token,
+            major: jsonResponse.major,
+          })
+        );
+        const userMajor = jsonResponse.major;
+        navigate(`/posts?major=${userMajor}`);
+      } else {
+        const serverError = await response.json();
+        setFail(serverError.message);
+      }
     }
   };
 
@@ -142,7 +163,11 @@ const App = () => {
             </div>
             <datalist id="majors">
               {majorsList.map((major) => (
-                <option data-value={major._id} value={major.name} key={major._id} />
+                <option
+                  data-value={major._id}
+                  value={major.name}
+                  key={major._id}
+                />
               ))}
             </datalist>
             <input type="submit" value="Register" onClick={handleRegister} />
@@ -152,7 +177,7 @@ const App = () => {
                 Click here.
               </a>
             </p>
-            {fail && <FailMessage action="register" />}
+            {fail && <FailMessage message={fail} />}
           </form>
         </div>
         {openPopup && <Login action={handleCloseLogin} />}

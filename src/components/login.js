@@ -14,9 +14,7 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [fail, setFail] = useState(false);
   const navigate = useNavigate();
-  const clientId =
-    "774704710261-0486u3ih7ergh0t8iasbbsrmnphbsir2.apps.googleusercontent.com";
-  console.log("GOOGLE CLIENT ID: ", process.env.REACT_APP_GOOGLE_CLIENT_ID);
+
   useEffect(() => {
     const isLoggedIn = async () => {
       const userData = localStorage.getItem("userData");
@@ -79,8 +77,6 @@ function Login(props) {
   };
 
   const onSuccess = async (res) => {
-    console.log(jwtDecode(res.credential));
-    const credentials = jwtDecode(res.credential);
     const options = {
       method: "POST",
       headers: { "Content-type": "application/json" },
@@ -112,12 +108,13 @@ function Login(props) {
       }
       navigate(`/posts${URLQuery}`);
     } else {
-      setFail(true);
+      const serverError = await response.json();
+      setFail(serverError.message);
     }
   };
 
   const onFailure = (res) => {
-    console.log(jwtDecode(res.credential));
+    setFail("Error logging in.");
   };
 
   return (
@@ -165,7 +162,7 @@ function Login(props) {
               </div>
             </div>
           </div>
-          {fail && <FailMessage action="log in" />}
+          {fail && <FailMessage message={fail} />}
         </form>
       </div>
     </div>

@@ -1,10 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import "./failMessage.css"
 
 const FailMessage = (props) => {
   return (
     <div className="fail-message">
-      <p>Failed to {props.action}, please try again.</p>
+      <p>{props.message}, please try again.</p>
     </div>
   );
 };
