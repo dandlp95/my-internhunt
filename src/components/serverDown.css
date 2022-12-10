@@ -40,3 +40,9 @@
 .server-down .server-down-text{
     margin-top: 3rem;
 }
+
+.server-down .close-button{
+    font-size: 2rem;
+    margin-left:-47rem;
+    cursor: pointer;
+}

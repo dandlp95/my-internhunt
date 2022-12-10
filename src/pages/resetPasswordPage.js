@@ -4,9 +4,11 @@ import FetchCalls from "../utils/fetchCalls";
 import Header from "../components/header";
 import PasswordInput from "../components/passwordInput";
 import "./resetPasswordPage.css";
+import ServerDown from "../components/serverDown";
 
 const ResetPasswordPage = () => {
   const [message, setMessage] = useState();
+  const [isServerDown, setIsServerDown] = useState(false)
   const navigate = useNavigate();
 
   const requestPasswordChange = async (password, passwordConfirmation) => {
@@ -34,7 +36,7 @@ const ResetPasswordPage = () => {
             setMessage(responseJson.message);
           }
         } catch (err) {
-          setMessage("Server not responding. Please try later.")
+          setIsServerDown(true)
         }
       } else {
         setMessage("Passwords do not match");
@@ -55,6 +57,7 @@ const ResetPasswordPage = () => {
         <div className="confirmation-message">
           {message && <div className="confirmation-message">{message}</div>}
         </div>
+        {isServerDown && <ServerDown action={setIsServerDown}/>}
       </div>
     </div>
   );

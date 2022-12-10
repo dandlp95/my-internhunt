@@ -196,7 +196,7 @@ const App = () => {
             {fail && <FailMessage message={fail} />}
           </form>
         </div>
-        {isServerDown && <ServerDown />}
+        {isServerDown && <ServerDown action={setIsServerDown} />}
         {openPopup && <Login action={handleCloseLogin} />}
       </div>
     </div>

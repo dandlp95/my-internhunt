@@ -2,10 +2,13 @@ import React from "react";
 import { FaRegSadTear } from "react-icons/fa";
 import "./serverDown.css";
 
-const ServerDown = () => {
+const ServerDown = (props) => {
   return (
     <div className="server-down">
       <section>
+        <div className="close-button" onClick={() => props.action(false)}>
+          X
+        </div>
         <div className="server-down-text">
           <FaRegSadTear className="sad-face" />
           <h2>Our servers are currently down</h2>
