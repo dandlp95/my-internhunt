@@ -7,6 +7,7 @@ import FailMessage from "./components/failMessage";
 import { isAuth } from "../src/utils/isLoggedIn";
 import Login from "./components/login";
 import validateEmail from "./utils/isEmail";
+import ServerDown from "./components/serverDown";
 
 const App = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ const App = () => {
   const [majorsList, setMajorsList] = useState([]);
   const [fail, setFail] = useState(false);
   const [openPopup, setOpenPopup] = useState(false);
+  const [isServerDown, setIsServerDown] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,13 +33,10 @@ const App = () => {
           navigate(`/posts${urlQuery}`);
         }
       } catch (err) {
-        setFail("Our servers are down.")
+        setIsServerDown(true);
       }
     };
-    isLoggedIn();
-  }, []);
 
-  useEffect(() => {
     const getMajors = async () => {
       const options = {
         method: "GET",
@@ -53,9 +52,11 @@ const App = () => {
           setFail(`Failed to fetch majors: ${serverError.message}`);
         }
       } catch (err) {
-        setFail("Failed to connect to the server");
+        setIsServerDown(true);
       }
     };
+
+    isLoggedIn();
     getMajors();
   }, []);
 
@@ -80,23 +81,27 @@ const App = () => {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email, password, firstName, lastName, major }),
       };
-      const response = await fetch(getApiRoot() + "/users/add", options);
 
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            userId: jsonResponse.userId,
-            jwt: jsonResponse.token,
-            major: jsonResponse.major,
-          })
-        );
-        const userMajor = jsonResponse.major;
-        navigate(`/posts?major=${userMajor}`);
-      } else {
-        const serverError = await response.json();
-        setFail(serverError.message);
+      try {
+        const response = await fetch(getApiRoot() + "/users/add", options);
+        if (response.ok) {
+          const jsonResponse = await response.json();
+          localStorage.setItem(
+            "userData",
+            JSON.stringify({
+              userId: jsonResponse.userId,
+              jwt: jsonResponse.token,
+              major: jsonResponse.major,
+            })
+          );
+          const userMajor = jsonResponse.major;
+          navigate(`/posts?major=${userMajor}`);
+        } else {
+          const serverError = await response.json();
+          setFail(serverError.message);
+        }
+      } catch (err) {
+        setIsServerDown(true);
       }
     }
   };
@@ -191,6 +196,7 @@ const App = () => {
             {fail && <FailMessage message={fail} />}
           </form>
         </div>
+        {isServerDown && <ServerDown />}
         {openPopup && <Login action={handleCloseLogin} />}
       </div>
     </div>
