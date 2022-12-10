@@ -18,6 +18,7 @@ import i from "../assets/plain-logo.png";
 import PaginationPage from "../components/paginationPage";
 import LoadingSpinner from "../components/loadingSpin";
 import ServerDown from "../components/serverDown";
+import Empty from "../components/empty";
 
 const MajorsContainer = (props) => {
   const [majors, setMajors] = useState();
@@ -87,7 +88,7 @@ const Posts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeBtn, setActiveBtn] = useState(1);
   const [isServerDown, setIsServerDown] = useState(false);
-
+  console.log("total posts: ", posts.length);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -343,19 +344,25 @@ const Posts = () => {
             </div>
             {!isLoading ? (
               <div>
-                {posts.map((post) => (
-                  <div className="post-preview-container" key={post._id}>
-                    <PostPreview post={post} />
+                {posts.length > 0 ? (
+                  <div>
+                    {posts.map((post) => (
+                      <div className="post-preview-container" key={post._id}>
+                        <PostPreview post={post} />
+                      </div>
+                    ))}
+                    {totalPosts > 10 && (
+                      <PaginationPage
+                        pages={numberOfPages}
+                        nextPage={nextpage}
+                        currentPage={currPage}
+                        hundreadChange={hundreadChange}
+                        tenChange={tenChange}
+                      ></PaginationPage>
+                    )}
                   </div>
-                ))}
-                {totalPosts > 10 && (
-                  <PaginationPage
-                    pages={numberOfPages}
-                    nextPage={nextpage}
-                    currentPage={currPage}
-                    hundreadChange={hundreadChange}
-                    tenChange={tenChange}
-                  ></PaginationPage>
+                ) : (
+                  <Empty />
                 )}
               </div>
             ) : (

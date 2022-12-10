@@ -9,6 +9,7 @@ import FetchCalls from "../utils/fetchCalls";
 import Header from "../components/header";
 import Rules from "../components/rules";
 import "./PostPage.css";
+import Empty from "../components/empty";
 
 // Need to add handling for when I get back a 200 but nothing was found, although map would probably take care of this...
 const PostPage = () => {
@@ -287,12 +288,21 @@ const PostPage = () => {
                   )}
                 </div>
                 <hr />
-                {comments.map((comment) => (
-                  <div key={comment._id}>
-                    <Comment comment={comment} deleteAction={deleteContent} />
-                    <hr />
+                {comments.length > 0 ? (
+                  <div>
+                    {comments.map((comment) => (
+                      <div key={comment._id}>
+                        <Comment
+                          comment={comment}
+                          deleteAction={deleteContent}
+                        />
+                        <hr />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <Empty size="small"/>
+                )}
               </div>
             </div>
           </div>
