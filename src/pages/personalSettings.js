@@ -18,6 +18,7 @@ const PersonalSettings = (props) => {
   const [confirmationResponse, setConfirmationResponse] = useState();
   const [isErr, setIsErr] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  
   const navigate = useNavigate();
 
   const requestPasswordChange = async (newPassword, newPasswordConfirm) => {
@@ -125,7 +126,7 @@ const PersonalSettings = (props) => {
         }
       }
     };
-    
+
     fetchUserData();
   }, []);
 

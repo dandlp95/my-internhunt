@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import FetchCalls from "../utils/fetchCalls";
 import Header from "../components/header";
 import "./forgotPassword.css";
-import { Navigate } from "react-router-dom";
 
 const InstructionsSuccess = (props) => {
   return <div className="resetPasswordInstructions">{props.message}</div>;
@@ -16,6 +15,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const handleRequestPasswordReset = async () => {
+    if(email){
     const backendCaller = new FetchCalls(
       "/users/request-password-reset",
       "PATCH",
@@ -39,6 +39,8 @@ const ForgotPassword = () => {
     } catch (err) {
       alert("Error processing your request. Please try again later.");
       navigate("/");
+    }}else{
+      setInstructionsMessage("Enter your account email.")
     }
   };
 

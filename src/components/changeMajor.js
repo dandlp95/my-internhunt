@@ -29,6 +29,7 @@ const ChangeMajor = () => {
     } else {
       const backendError = await response.json();
       alert(backendError.message);
+      setMajor(localStorageMajor);
     }
     setEdit(false);
   };
