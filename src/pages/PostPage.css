@@ -124,6 +124,10 @@
   line-height: 1.3rem;
   padding: 0.5rem;
 }
+
+.post-page-main .post-section p {
+  white-space: pre-line;
+}
 .edit-cancel-buttons {
   margin-top: 1rem;
   margin-bottom: 2rem;
@@ -198,6 +202,7 @@
 
 .post-page-main .comment-main p {
   margin-top: 0.3rem;
+  white-space: pre-line
 }
 
 .post-page-main .comment-main {
