@@ -18,7 +18,8 @@ const PersonalSettings = (props) => {
   const [confirmationResponse, setConfirmationResponse] = useState();
   const [isErr, setIsErr] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const navigate = useNavigate();
 
   const requestPasswordChange = async (newPassword, newPasswordConfirm) => {
@@ -45,6 +46,9 @@ const PersonalSettings = (props) => {
           const response = await backendCaller.protectedBody();
           if (response.ok) {
             setIsErr(false);
+            setOldPassword("")
+            setNewPassword("");
+            setNewPasswordConfirm("");
             setConfirmationResponse(
               "Your password has been succesfully changed."
             );
@@ -145,11 +149,36 @@ const PersonalSettings = (props) => {
             <div className="passwords-inputs">
               <input
                 type="password"
+                value={oldPassword}
                 placeholder="Enter your old password"
                 onChange={(e) => setOldPassword(e.target.value)}
                 className="old-password-input"
               />
-              <PasswordInput passwordChange={requestPasswordChange} />
+              <div className="password-input-main">
+                <div className="new-password-container">
+                  <input
+                    value={newPassword}
+                    type="password"
+                    placeholder="Enter your new password"
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  <input
+                    value={newPasswordConfirm}
+                    type="password"
+                    placeholder="Enter your new password again"
+                    onChange={(e) => setNewPasswordConfirm(e.target.value)}
+                  />
+                </div>
+                <div className="buttons">
+                  <button
+                    onClick={() =>
+                      requestPasswordChange(newPassword, newPasswordConfirm)
+                    }
+                  >
+                    Change Password
+                  </button>
+                </div>
+              </div>
               {confirmationResponse && (
                 <div
                   className={isErr ? "error-response" : "confirmation-response"}
