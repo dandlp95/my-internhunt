@@ -15,8 +15,13 @@ const Guidelines = () => {
     const isLoggedIn = async () => {
       const res = await isAuth();
       if (!res.ok) {
-        alert("Please log in");
-        navigate("/");
+        if (res.err === "server down") {
+          alert("Our servers are down");
+          navigate("/");
+        } else {
+          alert("Please log in");
+          navigate("/");
+        }
       } else {
         const userData = localStorage.getItem("userData");
         const userDataJson = JSON.parse(userData);
