@@ -70,6 +70,8 @@
   border-radius: 8px;
   background-color: #f5f4f3;
   padding-left: 1rem;
+  font-family: Consolas;
+  font-size:1rem;
 }
 
 .posts-page .post-metadata {
