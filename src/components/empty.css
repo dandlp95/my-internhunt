@@ -11,3 +11,11 @@
 .empty-message {
   font-size: 3rem;
 }
+
+#small-size .dog-icon {
+  font-size: 8rem;
+}
+
+#small-size .empty-message {
+  font-size: 1.4rem;
+}
