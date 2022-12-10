@@ -25,6 +25,13 @@ const ChangeMajor = () => {
     );
     const response = await backendCaller.protectedBody();
     if (response.ok) {
+      const responseData = await response.json();
+      var userData2 = localStorage.getItem("userData");
+      if (userData2) {
+        userData2 = JSON.parse(userData2);
+        userData2.major = responseData.major;
+        localStorage.setItem("userData", JSON.stringify(userData2));
+      }
       alert("Your major has been changed.");
     } else {
       const backendError = await response.json();

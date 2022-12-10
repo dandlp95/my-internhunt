@@ -60,7 +60,6 @@ const PersonalSettings = (props) => {
             setIsErr(true);
           }
         } else {
-          console.log("passwords dont match");
           setMessage2("Passwords don't match");
         }
       }
