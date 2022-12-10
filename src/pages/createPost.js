@@ -10,17 +10,21 @@ import Rules from "../components/rules";
 /* MajorInput component */
 const MajorInput = (props) => {
   const [majorsList, setMajorsList] = useState([]);
-  const [major, setMajor] = useState();
+  const navigate = useNavigate();
   const inputMajor = useRef();
 
   useEffect(() => {
     const getMajors = async () => {
       const fetchCallGetMajors = new FetchCalls("/majors", "GET");
-      const response = await fetchCallGetMajors.publicGet();
-
-      if (response.ok) {
-        const majors = await response.json();
-        setMajorsList(majors);
+      try {
+        const response = await fetchCallGetMajors.publicGet();
+        if (response.ok) {
+          const majors = await response.json();
+          setMajorsList(majors);
+        }
+      } catch (err) {
+        alert("Our servers are down.");
+        navigate("/");
       }
     };
     getMajors();
@@ -48,7 +52,6 @@ const MajorInput = (props) => {
 const CreatePost = () => {
   /* majorInputList refers to the input boxes to add the major
   majorList refers to the list of majors... */
-
   const [majorInputList, setMajorInputList] = useState([]);
   const [majorList, setMajorList] = useState([]);
   const [title, setTitle] = useState("");
@@ -78,11 +81,14 @@ const CreatePost = () => {
     const isLoggedIn = async () => {
       const res = await isAuth();
       if (!res.ok) {
-        alert("Please log in");
-        navigate("/");
+        if (res.err === "server down") {
+          alert("Our servers are down.");
+          navigate("/");
+        } else {
+          alert("Please log in");
+          navigate("/");
+        }
       } else {
-        const userData = localStorage.getItem("userData");
-        const userDataJson = JSON.parse(userData);
         const info = await res.json();
         setUser(info);
       }
@@ -96,37 +102,60 @@ const CreatePost = () => {
     );
   }, [majorList]);
 
+  const isFormInvalid = () => {
+    if (!title) return "Enter a title";
+    if (!content) return "Post content can't be empty";
+    if (!type) return "Pick a category";
+    if (majorList.length < 1) return "Please pick a major";
+    return false;
+  };
+
   const postPost = async () => {
     let userData = localStorage.getItem("userData");
-    userData = JSON.parse(userData);
+    userData = userData ? JSON.parse(userData) : null;
 
-    if (userData.userId && userData.jwt) {
-      const body = {
-        title: title,
-        content: content,
-        owner: userData.userId,
-        state: state,
-        company: company,
-        type: type,
-        majors: majorList,
-      };
-      const postObject = new FetchCalls(
-        "/posts/add",
-        "POST",
-        userData.jwt,
-        body
-      );
-      const response = await postObject.protectedBody();
-
-      if (response.ok) {
-        const newPost = await response.json();
-        const postId = newPost._id;
-        navigate(`/post?postId=${postId}`);
+    if (userData) {
+      if (userData.userId && userData.jwt) {
+        if (!isFormInvalid()) {
+          const body = {
+            title: title,
+            content: content,
+            owner: userData.userId,
+            state: state,
+            company: company,
+            type: type,
+            majors: majorList,
+          };
+          const postObject = new FetchCalls(
+            "/posts/add",
+            "POST",
+            userData.jwt,
+            body
+          );
+          const response = await postObject.protectedBody();
+          try {
+            if (response.ok) {
+              const newPost = await response.json();
+              const postId = newPost._id;
+              navigate(`/post?postId=${postId}`);
+            } else {
+              const serverError = await response.json();
+              alert(serverError.message);
+            }
+          } catch (err) {
+            alert("Error processing your request.");
+            navigate("/posts");
+          }
+        } else {
+          alert(isFormInvalid());
+        }
       } else {
-        alert("Something went wrong.");
+        alert("Error!");
+        navigate("/");
       }
     } else {
-      alert("Error!");
+      alert("Error");
+      navigate("/");
     }
   };
 
