@@ -25,8 +25,9 @@
 .title-input-div input {
   border: 2px solid lightgrey;
   border-radius: 5px;
-  width: 100%;
-  padding: 0 0.5rem;
+  width: 99%;
+  padding-left: 0.5rem;
+  padding-right: 0;
   font-family: Consolas;
   font-size: 1.2rem;
 }
