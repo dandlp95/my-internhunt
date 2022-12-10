@@ -4,20 +4,18 @@ import "./header.css";
 import altlogo from "../assets/alt3.png";
 import { SlMagnifier } from "react-icons/sl";
 
-const Header = (props) => {
+const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const userData = localStorage.getItem("userData");
-  const userDataJson = JSON.parse(userData);
+  const userDataJson = userData ? JSON.parse(userData) : null;
   const navigate = useNavigate();
 
   const searchPost = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const majorParam = urlParams.get("major");
-    
+
     navigate(
-      `/posts?major=${encodeURI(majorParam)}&search=${encodeURI(
-        searchQuery
-      )}`
+      `/posts?major=${encodeURI(majorParam)}&search=${encodeURI(searchQuery)}`
     );
   };
 
@@ -58,7 +56,7 @@ const Header = (props) => {
         </div>
         <div className="headerflex searchBar">
           <div className="search-icon">
-            <SlMagnifier className="magnifying-glass"/>
+            <SlMagnifier className="magnifying-glass" />
           </div>
           <input
             onChange={(e) => setSearchQuery(e.target.value)}

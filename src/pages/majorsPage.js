@@ -24,32 +24,46 @@ const MajorsPage = () => {
     setMajors(await data.json());
   };
 
-  const isLoggedIn = async () => {
-    const res = await isAuth();
-    if (!res.ok) {
-      alert("Please log in");
-      navigate("/");
-    } else {
-      const userData = localStorage.getItem("userData");
-      const userDataJson = JSON.parse(userData);
-      setUser(userDataJson.userId);
-    }
-  };
-
   useEffect(() => {
+    const isLoggedIn = async () => {
+      const res = await isAuth();
+      if (res.ok) {
+        const userData = localStorage.getItem("userData");
+        const userDataJson = JSON.parse(userData);
+        setUser(userDataJson.userId);
+      } else if (res.err === "server down") {
+        alert("Our servers are down");
+        navigate("/");
+      } else {
+        alert("Please log in");
+        navigate("/");
+      }
+    };
+
     const getMajors = async () => {
-      const fetchData = new FetchCalls("/majors", "GET");
-      const data = await fetchData.publicGet();
-      setMajors(await data.json());
-      setIsLoading(false);
+      try {
+        const fetchData = new FetchCalls("/majors", "GET");
+        const data = await fetchData.publicGet();
+        setMajors(await data.json());
+        setIsLoading(false);
+      } catch (err) {
+        alert("Error processing request");
+        navigate("/");
+      }
     };
     const getByDepartments = async () => {
-      const fetchData = new FetchCalls("/departments", "GET");
-      const data = await fetchData.publicGet();
-      setDepartments(await data.json());
+      try {
+        const fetchData = new FetchCalls("/departments", "GET");
+        const data = await fetchData.publicGet();
+        setDepartments(await data.json());
+      } catch (err) {
+        alert("Error processing request");
+        navigate("/");
+      }
     };
     getMajors();
     getByDepartments();
+    isLoggedIn();
   }, []);
 
   return (
