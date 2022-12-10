@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { BiDownArrow, BiUpArrow } from "react-icons/bi";
+// import { BiDownArrow, BiUpArrow } from "react-icons/bi";
+import {BiDownvote, BiUpvote} from "react-icons/bi"
 import FetchCalls from "../utils/fetchCalls";
 
 const VotingInterface = (props) => {
@@ -66,7 +67,7 @@ const VotingInterface = (props) => {
         onClick={(e) => handleVote(1)}
         disabled={isUpDisabled}
       >
-        <BiUpArrow className="arrow-icon" />
+        <BiUpvote className="arrow-icon" />
       </button>
       <span className="vote-number">{vote}</span>
       <button
@@ -74,7 +75,7 @@ const VotingInterface = (props) => {
         onClick={(e) => handleVote(-1)}
         disabled={isDownDisabled}
       >
-        <BiDownArrow className="arrow-icon" />
+        <BiDownvote className="arrow-icon" />
       </button>
     </div>
   );
