@@ -4,7 +4,6 @@ import FetchCalls from "../utils/fetchCalls";
 import { isAuth } from "../utils/isLoggedIn";
 import Header from "../components/header";
 import "./personalSettings.css";
-import PasswordInput from "../components/passwordInput";
 import ChangeMajor from "../components/changeMajor";
 import UserManager from "../components/userManager";
 
@@ -135,7 +134,6 @@ const PersonalSettings = (props) => {
   }, []);
 
   if (user) {
-    console.log("the user: ", user);
     if (oldPasswordExists) {
       return (
         <div className="password-change-main">
@@ -230,10 +228,14 @@ const PersonalSettings = (props) => {
               </div>
             )}
           </div>
-          {/* Test this part... */}
           <div className="change-major-ui-container">
             <ChangeMajor />
           </div>
+          {isAdmin && (
+            <div>
+              <UserManager />
+            </div>
+          )}
         </div>
       );
     }
