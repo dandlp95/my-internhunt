@@ -20,62 +20,60 @@ const PersonalSettings = (props) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
-  const fetchUserData = async () => {
-    const response = await isAuth();
-    if (response.ok) {
-      const fetchUser = await response.json();
-      console.log("fetch User: ", fetchUser);
-      setUser(fetchUser);
-      setOldPasswordExists(fetchUser.customPassword);
-
-      if (fetchUser.accessLevel > 0) setIsAdmin(true);
-    } else {
-      alert("Please log in");
-      navigate("/");
-    }
-  };
-
   const requestPasswordChange = async (newPassword, newPasswordConfirm) => {
     const user = JSON.parse(localStorage.getItem("userData"));
-
-    if (!oldPassword) {
+    if (oldPassword) {
       setMessage1(null);
-      if (newPassword === newPasswordConfirm) {
-        const body = {
-          currPassword: oldPassword,
-          newPassword: newPassword,
-        };
-
-        const backendCaller = new FetchCalls(
-          `/users/edit-password/${user.userId}`,
-          "PATCH",
-          user.jwt,
-          body
-        );
-
-        const response = await backendCaller.protectedBody();
-        if (response.ok) {
-          setConfirmationResponse(
-            "Your password has been succesfully changed."
-          );
-        } else {
-          const data = await response.json();
-          console.log("this is the error", data);
-        }
+      if (!newPassword || !newPasswordConfirm) {
+        setIsErr(true);
+        setConfirmationResponse("Please fill out both fields");
       } else {
-        setMessage2("Passwords don't match");
+        if (newPassword === newPasswordConfirm) {
+          const body = {
+            currPassword: oldPassword,
+            newPassword: newPassword,
+          };
+
+          const backendCaller = new FetchCalls(
+            `/users/edit-password/${user.userId}`,
+            "PATCH",
+            user.jwt,
+            body
+          );
+
+          const response = await backendCaller.protectedBody();
+          if (response.ok) {
+            setIsErr(false);
+            setConfirmationResponse(
+              "Your password has been succesfully changed."
+            );
+          } else if (response.status === 401) {
+            setIsErr(true);
+            setConfirmationResponse("Incorrect password. Please try again.");
+          } else {
+            const data = await response.json();
+            setConfirmationResponse(data.message);
+            setIsErr(true);
+          }
+        } else {
+          console.log("passwords dont match");
+          setMessage2("Passwords don't match");
+        }
       }
     } else {
-      setMessage1("Please enter your old password.");
+      setIsErr(true);
+      setConfirmationResponse("Please enter your current password.");
     }
   };
 
   const requestEmailCode = async () => {
     var user;
-
     const res = await isAuth();
     if (res.ok) {
       user = await res.json();
+    } else if (res.err === "server down") {
+      alert("Error processing your request.");
+      navigate("/");
     } else {
       alert("Please login");
       navigate("/");
@@ -90,24 +88,49 @@ const PersonalSettings = (props) => {
       { email }
     );
 
-    const response = await backendCaller.protectedBody();
-    if (response.ok) {
-      setConfirmationResponse(
-        "The link was sent to your registered email address. Use it to set a new password"
-      );
-    } else {
-      setIsErr(true);
-      const error = await response.json();
-      setConfirmationResponse(error.message);
+    try {
+      const response = await backendCaller.protectedBody();
+      if (response.ok) {
+        setIsErr(false);
+        setConfirmationResponse(
+          "The link was sent to your registered email address. Use it to set a new password"
+        );
+      } else {
+        setIsErr(true);
+        const error = await response.json();
+        setConfirmationResponse(error.message);
+      }
+    } catch (err) {
+      alert("Error processing your request.");
+      navigate("/");
     }
   };
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      const response = await isAuth();
+      if (response.ok) {
+        const fetchUser = await response.json();
+        setUser(fetchUser);
+        setOldPasswordExists(fetchUser.customPassword);
+
+        if (fetchUser.accessLevel > 0) setIsAdmin(true);
+      } else if (response.err) {
+        if (response.err === "server down") {
+          alert("Our servers are down.");
+          navigate("/");
+        } else {
+          alert("Please log in");
+          navigate("/");
+        }
+      }
+    };
+    
     fetchUserData();
   }, []);
 
   if (user) {
-    console.log("the user: ", user)
+    console.log("the user: ", user);
     if (oldPasswordExists) {
       return (
         <div className="password-change-main">
@@ -120,12 +143,19 @@ const PersonalSettings = (props) => {
             </div>
             <div className="passwords-inputs">
               <input
-                type="text"
+                type="password"
                 placeholder="Enter your old password"
                 onChange={(e) => setOldPassword(e.target.value)}
                 className="old-password-input"
               />
               <PasswordInput passwordChange={requestPasswordChange} />
+              {confirmationResponse && (
+                <div
+                  className={isErr ? "error-response" : "confirmation-response"}
+                >
+                  {confirmationResponse}
+                </div>
+              )}
             </div>
           </div>
           <div className="change-major-ui-container">
@@ -142,6 +172,7 @@ const PersonalSettings = (props) => {
       return (
         <div className="password-change-main">
           <Header accountId={user._id} />
+          <div className="spacer">&nbsp;</div>
           <div className="password-ui-container">
             <div className="password-header">
               <h2>Change Password</h2>
@@ -154,7 +185,7 @@ const PersonalSettings = (props) => {
             </div>
             <div className="buttons">
               <button
-                onClick={(e) => {
+                onClick={() => {
                   requestEmailCode();
                 }}
               >
