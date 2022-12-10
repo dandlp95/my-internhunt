@@ -8,7 +8,7 @@ import { timeDifference } from "../utils/timeDifference";
 
 const PostPreview = (props) => {
   const [post, setPost] = useState(props.post);
-  const [postContent, setPostContent] = useState(props.post.content)
+  const [postContent, setPostContent] = useState(props.post.content);
   const [postOwner, setPostOwner] = useState(props.post.owner);
   const [voteCount, setVoteCount] = useState(props.post.rating);
   const timeDiff = timeDifference(new Date(), new Date(post.date));
@@ -22,9 +22,7 @@ const PostPreview = (props) => {
     }
 
     const data = getLocalStorage("userData");
-    if (!data) {
-      console.log("no local storage data :(");
-    } else {
+    if (data) {
       const caller = new FetchCalls(
         `/posts/vote/${voteReq}/${post._id}`,
         "PATCH",
@@ -34,8 +32,9 @@ const PostPreview = (props) => {
       const response = await caller.protectedBody();
       if (response.ok) {
         setVoteCount(voteCount + userVote);
-      } else {
-        console.log();
+      } else if (response.status !== 400) {
+        const backendError = await response.json();
+        alert(backendError.message);
       }
     }
   };
@@ -44,9 +43,9 @@ const PostPreview = (props) => {
     if (!postOwner) {
       setPostOwner({ firstName: "[Deleted ", lastName: "User]" });
     }
-    if(postContent.length > 350){
-      setPostContent(post.content.substring(0, 350) + "..."
-)    }
+    if (postContent.length > 350) {
+      setPostContent(post.content.substring(0, 350) + "...");
+    }
   }, []);
 
   if (postOwner) {

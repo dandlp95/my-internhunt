@@ -26,7 +26,7 @@ export const isAuth = async () => {
     const fetchRes = await fetch(getApiRoot() + "/users/isAuthorized", options);
     return fetchRes;
   } catch (err) {
-    response.err = err;
+    response.err = "server down";
     return response;
   }
 };

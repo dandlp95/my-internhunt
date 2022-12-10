@@ -17,23 +17,12 @@ import "./posts.css";
 import i from "../assets/plain-logo.png";
 import PaginationPage from "../components/paginationPage";
 import LoadingSpinner from "../components/loadingSpin";
+import ServerDown from "../components/serverDown";
+import Empty from "../components/empty";
 
 const MajorsContainer = (props) => {
   const [majors, setMajors] = useState();
   const navigate = useNavigate();
-
-  const getMajors = async () => {
-    const userData = localStorage.getItem("userData");
-    const jwt = JSON.parse(userData).jwt;
-    const apiCaller = new FetchCalls("/majors", "GET", jwt);
-    const response = await apiCaller.publicGet();
-    if (response.ok) {
-      const fetchedMajors = await response.json();
-      setMajors(fetchedMajors);
-    } else {
-      console.log(response);
-    }
-  };
 
   const handleMajorClick = (url) => {
     props.styleActiveButton(1);
@@ -41,13 +30,26 @@ const MajorsContainer = (props) => {
   };
 
   useEffect(() => {
+    const getMajors = async () => {
+      const userData = localStorage.getItem("userData");
+      if (userData) {
+        try {
+          const jwt = JSON.parse(userData).jwt;
+          const apiCaller = new FetchCalls("/majors", "GET", jwt);
+          const response = await apiCaller.publicGet();
+          if (response.ok) {
+            const fetchedMajors = await response.json();
+            setMajors(fetchedMajors);
+          }
+        } catch (err) {}
+      }
+    };
     getMajors();
   }, []);
 
   if (majors) {
     return (
       <div className="majors-options">
-        {/* <img src={workImg}/> */}
         <h3>Explore other majors</h3>
         <div className="majors-list-container">
           {majors.slice(0, 8).map((major) => (
@@ -85,7 +87,8 @@ const Posts = () => {
   const [isdropdownActive, setIsdropdownActive] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [activeBtn, setActiveBtn] = useState(1);
-
+  const [isServerDown, setIsServerDown] = useState(false);
+  console.log("total posts: ", posts.length);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -138,33 +141,6 @@ const Posts = () => {
     setCurrPage(finalPage);
     setPosts([]);
   };
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const activeType = urlParams.get("type");
-    console.log("active type: ", activeType);
-    if (!activeType) setActiveBtn(1);
-    else if (activeType === "Review") setActiveBtn(2);
-    else if (activeType === "Internship opportunity") setActiveBtn(3);
-    else if (activeType === "Advise") setActiveBtn(4);
-    else if (activeType === "Question") setActiveBtn(5);
-  }, []);
-
-  useEffect(() => {
-    const isLoggedIn = async () => {
-      const res = await isAuth();
-      if (!res.ok) {
-        alert("Please log in");
-        navigate("/");
-      } else {
-        const userData = localStorage.getItem("userData");
-        const userDataJson = JSON.parse(userData);
-        const info = await res.json();
-        setUser(info);
-      }
-    };
-
-    isLoggedIn();
-  }, []);
 
   const sortBy = (sortParam) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -186,6 +162,34 @@ const Posts = () => {
   };
 
   useEffect(() => {
+    const isLoggedIn = async () => {
+      const res = await isAuth();
+      if (res.err) {
+        if (res.err === "server down") {
+          alert("Our servers are down");
+          navigate("/");
+        } else {
+          alert("Please login");
+          navigate("/");
+        }
+      } else {
+        const info = await res.json();
+        setUser(info);
+      }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeType = urlParams.get("type");
+    if (!activeType) setActiveBtn(1);
+    else if (activeType === "Review") setActiveBtn(2);
+    else if (activeType === "Internship opportunity") setActiveBtn(3);
+    else if (activeType === "Advise") setActiveBtn(4);
+    else if (activeType === "Question") setActiveBtn(5);
+
+    isLoggedIn();
+  }, []);
+
+  useEffect(() => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const major = urlParams.get("major");
@@ -201,33 +205,33 @@ const Posts = () => {
 
       const URIQuery = `search=${search}&major=${major}&type=${type}&sort=${sort}&page=${currPage}`;
       const URIQuery2 = `search=${search}&major=${major}&type=${type}`;
-      console.log("URIQUERY: ", URIQuery);
       const response = await fetch(
         getApiRoot() + "/posts/getPosts?" + encodeURI(URIQuery),
         options
       );
 
-      const response2 = await fetch(
-        getApiRoot() + "/posts/getPostsCount?" + encodeURI(URIQuery2),
-        options
-      );
-      setIsLoading(false);
+      try {
+        const response2 = await fetch(
+          getApiRoot() + "/posts/getPostsCount?" + encodeURI(URIQuery2),
+          options
+        );
+        setIsLoading(false);
 
-      if (response.ok && response2.ok) {
-        const foundPosts = await response.json();
-        const totalPostsCount = await response2.json();
+        if (response.ok && response2.ok) {
+          const foundPosts = await response.json();
+          const totalPostsCount = await response2.json();
 
-        setTotalPosts(totalPostsCount.count);
-        setPosts(foundPosts);
-      } else {
-        console.log("something failed", response);
+          setTotalPosts(totalPostsCount.count);
+          setPosts(foundPosts);
+        }
+      } catch (err) {
+        setIsServerDown(true);
       }
     };
     getPosts();
   }, [location, currPage]);
 
   useEffect(() => {
-    console.log("total posts: ", totalPosts);
     if (totalPosts % 10 === 0) {
       setNumberOfPages(Math.floor(totalPosts / 10));
     } else {
@@ -340,19 +344,25 @@ const Posts = () => {
             </div>
             {!isLoading ? (
               <div>
-                {posts.map((post) => (
-                  <div className="post-preview-container" key={post._id}>
-                    <PostPreview post={post} />
+                {posts.length > 0 ? (
+                  <div>
+                    {posts.map((post) => (
+                      <div className="post-preview-container" key={post._id}>
+                        <PostPreview post={post} />
+                      </div>
+                    ))}
+                    {totalPosts > 10 && (
+                      <PaginationPage
+                        pages={numberOfPages}
+                        nextPage={nextpage}
+                        currentPage={currPage}
+                        hundreadChange={hundreadChange}
+                        tenChange={tenChange}
+                      ></PaginationPage>
+                    )}
                   </div>
-                ))}
-                {totalPosts > 10 && (
-                  <PaginationPage
-                    pages={numberOfPages}
-                    nextPage={nextpage}
-                    currentPage={currPage}
-                    hundreadChange={hundreadChange}
-                    tenChange={tenChange}
-                  ></PaginationPage>
+                ) : (
+                  <Empty />
                 )}
               </div>
             ) : (
@@ -363,6 +373,16 @@ const Posts = () => {
             <MajorsContainer styleActiveButton={setActiveBtn} />
           </div>
         </div>
+      </div>
+    );
+  } else if (isServerDown) {
+    return (
+      <div
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <ServerDown action={setIsServerDown} />
       </div>
     );
   }

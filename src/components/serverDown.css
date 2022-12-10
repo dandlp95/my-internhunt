@@ -1,0 +1,48 @@
+.server-down {
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.server-down section {
+  background-color: #f8f8f8;
+  border-radius: 80px;
+  position: absolute;
+  width: 800px;
+  height: fit-content;
+  aspect-ratio: 1.5/1;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 40px;
+  box-shadow: 0 5px 10px grey;
+  text-align: center;
+  padding: 1rem;
+}
+
+.server-down .sad-face{
+    font-size: 12rem;
+    color: #222823
+}
+
+.server-down h2{
+    font-size: 2.5rem;
+}
+
+.server-down p{
+    font-size: 1.7rem;
+}
+
+.server-down .server-down-text{
+    margin-top: 3rem;
+}
+
+.server-down .close-button{
+    font-size: 2rem;
+    margin-left:-47rem;
+    cursor: pointer;
+}

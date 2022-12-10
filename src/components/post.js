@@ -55,7 +55,9 @@ const Post = (props) => {
       const response = await caller.protectedBody();
       if (response.ok) {
         setVoteCount(voteCount + userVote);
-      } else {
+      } else if (response.status !== 400) {
+        const backendError = await response.json();
+        alert(backendError.message);
       }
     }
     setRerenderChild(!rerenderChild);
@@ -66,7 +68,6 @@ const Post = (props) => {
       const response = await isAuth();
       if (response.ok) {
         const user = await response.json();
-        console.log("fetched user: ", user)
         if (user._id === props.user._id) {
           setIsPostCreator(true);
         } else {

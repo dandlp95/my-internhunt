@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FetchCalls from "../utils/fetchCalls";
-import Button from "../components/button";
 import Header from "../components/header";
 import "./forgotPassword.css";
 
@@ -12,28 +12,36 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState();
   const [displayInstructions, setDisplayInstructions] = useState(false);
   const [instructionsMessage, setInstructionsMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleRequestPasswordReset = async () => {
+    if(email){
     const backendCaller = new FetchCalls(
       "/users/request-password-reset",
       "PATCH",
       null,
       { email: email }
     );
-    const response = await backendCaller.publicBody();
-
-    console.log(response);
-    if (response.ok) {
-      setInstructionsMessage(
-        `An email with instructions on how to reset your password has been sent.
+    try {
+      const response = await backendCaller.publicBody();
+      if (response.ok) {
+        setInstructionsMessage(
+          `An email with instructions on how to reset your password has been sent.
         If you don't receive it within 5 minutes, please submit the request again.`
-      );
-    } else if (response.status === 404) {
-      setInstructionsMessage("Email not found.");
-    } else {
-      setInstructionsMessage("There was an error. Please try again.");
+        );
+      } else if (response.status === 404) {
+        setInstructionsMessage("Email not found.");
+      } else {
+        const backendErr = await response.json();
+        setInstructionsMessage(backendErr.message);
+      }
+      setDisplayInstructions(true);
+    } catch (err) {
+      alert("Error processing your request. Please try again later.");
+      navigate("/");
+    }}else{
+      setInstructionsMessage("Enter your account email.")
     }
-    setDisplayInstructions(true);
   };
 
   return (

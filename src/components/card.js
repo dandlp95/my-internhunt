@@ -7,7 +7,6 @@ const Card = (props) => {
   const [majorImg, setMajorImg] = useState();
 
   const fetchMajorImg = async () => {
-    console.log(props.major._id)
     const apiCaller = new FetchCalls(
       `/majorimages/getbymajor/${props.major._id}`,
       "GET"
@@ -15,10 +14,7 @@ const Card = (props) => {
     const response = await apiCaller.publicGet();
     if (response.ok) {
       const data = await response.json();
-      console.log("fetchedimg: ", data)
       setMajorImg(data);
-    } else {
-      console.log(response);
     }
   };
 

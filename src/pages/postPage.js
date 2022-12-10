@@ -9,6 +9,7 @@ import FetchCalls from "../utils/fetchCalls";
 import Header from "../components/header";
 import Rules from "../components/rules";
 import "./PostPage.css";
+import Empty from "../components/empty";
 
 // Need to add handling for when I get back a 200 but nothing was found, although map would probably take care of this...
 const PostPage = () => {
@@ -31,19 +32,23 @@ const PostPage = () => {
   useEffect(() => {
     const isLoggedIn = async () => {
       const res = await isAuth();
-      if (!res.ok) {
-        alert("Please log in");
-        navigate("/");
+      if (res.err) {
+        if (res.err === "server down") {
+          alert("Our servers are down");
+          navigate("/");
+        } else {
+          alert("Please login");
+          navigate("/");
+        }
       } else {
-        const userData = localStorage.getItem("userData");
-        const userDataJson = JSON.parse(userData);
-        setUser(userDataJson.userId);
+        const info = await res.json();
+        setUser(info);
       }
     };
     isLoggedIn();
   }, []);
 
-  const sort = async (sortParam) => {
+  const sort = (sortParam) => {
     const urlParams = new URLSearchParams(window.location.search);
     const postParam = urlParams.get("postId");
     const url = `/post?postId=${postParam}&sort=${sortParam}`;
@@ -61,13 +66,17 @@ const PostPage = () => {
       post: postId,
     };
 
-    const ReqClass = new FetchCalls("/comments/add", "POST", token, body);
-    const response = await ReqClass.protectedBody();
-
-    if (response.ok) {
-      setFetchComments(!fetchComments); // Makes useEffect fetch comments again
-    } else {
-      alert("Error");
+    const backendCaller = new FetchCalls("/comments/add", "POST", token, body);
+    try {
+      const response = await backendCaller.protectedBody();
+      if (response.ok) {
+        setFetchComments(!fetchComments);
+      } else {
+        const serverErr = await response.json();
+        alert(serverErr.message);
+      }
+    } catch (err) {
+      alert("Error processing your request");
     }
   };
 
@@ -83,30 +92,47 @@ const PostPage = () => {
       userData.jwt,
       body
     );
-    const response = await fetchCall.protectedBody();
-    if (response.ok) {
-      const responseJson = await response.json();
-      setPost(responseJson);
+    try {
+      const response = await fetchCall.protectedBody();
+      if (response.ok) {
+        const responseJson = await response.json();
+        setPost(responseJson);
+      } else {
+        const serverErr = await response.json();
+        alert(serverErr.message);
+      }
+    } catch (err) {
+      alert("Error processing your request");
     }
   };
 
   const deleteContent = async (route, id, isRedirect) => {
     let userData = localStorage.getItem("userData");
-    userData = JSON.parse(userData);
-    const fetchCall = new FetchCalls(
-      `/${route}/delete/${id}`,
-      "DELETE",
-      userData.jwt
-    );
-    const response = await fetchCall.protectedNoBody();
-    if (response.ok) {
-      if (isRedirect) {
-        navigate(`/posts?major=${encodeURI(userData.major)}`);
-      } else {
-        setFetchComments(!fetchComments);
+    if (userData) {
+      try {
+        userData = JSON.parse(userData);
+        const fetchCall = new FetchCalls(
+          `/${route}/delete/${id}`,
+          "DELETE",
+          userData.jwt
+        );
+        const response = await fetchCall.protectedNoBody();
+        if (response.ok) {
+          if (isRedirect) {
+            navigate(`/posts?major=${encodeURI(userData.major)}`);
+          } else {
+            setFetchComments(!fetchComments);
+          }
+        } else {
+          const serverErr = await response.json();
+          alert(serverErr.message);
+        }
+      } catch (err) {
+        alert("Error processing your request.");
       }
     } else {
-      alert("error deleting the post");
+      alert("Please login");
+      navigate("/");
     }
   };
 
@@ -124,29 +150,34 @@ const PostPage = () => {
     unexistentPost.content = "Bad content";
 
     const getPost = async () => {
-      const response = await fetch(
-        getApiRoot() + "/posts/getById/" + postId,
-        options
-      );
-      if (response.ok) {
-        const foundPost = await response.json();
-        setPost(foundPost);
-
-        const userId = foundPost.owner;
-
-        const response2 = await fetch(
-          getApiRoot() + "/users/getById/" + userId
+      try {
+        const response = await fetch(
+          getApiRoot() + "/posts/getById/" + postId,
+          options
         );
+        if (response.ok) {
+          const foundPost = await response.json();
+          setPost(foundPost);
 
-        if (response2.ok) {
-          const foundUser = await response2.json();
-          setPostuser(foundUser);
+          const userId = foundPost.owner;
+
+          const response2 = await fetch(
+            getApiRoot() + "/users/getById/" + userId
+          );
+
+          if (response2.ok) {
+            const foundUser = await response2.json();
+            setPostuser(foundUser);
+          } else {
+            setPostuser(deletedUser);
+          }
         } else {
-          setPostuser(deletedUser);
+          alert("Post unexistent");
+          navigate("/posts");
         }
-      } else {
-        setPost(unexistentPost);
-        setPostuser(deletedUser);
+      } catch (err) {
+        alert("Error fetching data");
+        navigate("/");
       }
     };
     getPost();
@@ -164,18 +195,23 @@ const PostPage = () => {
 
       if (urlParams.get("sort")) sortParam = urlParams.get("sort");
 
-      const response = await fetch(
-        getApiRoot() + "/comments/getByPost/" + postId + `?sort=${sortParam}`,
-        options
-      );
-      if (response.ok) {
-        const commentList = await response.json();
-        setComments(commentList);
-        setCommentsLength(commentList.length);
-      } else {
-        setComments([]);
+      try {
+        const response = await fetch(
+          getApiRoot() + "/comments/getByPost/" + postId + `?sort=${sortParam}`,
+          options
+        );
+        if (response.ok) {
+          const commentList = await response.json();
+          setComments(commentList);
+          setCommentsLength(commentList.length);
+        } else {
+          setComments([]);
+        }
+      } catch (err) {
+        alert("Error fetching comments");
       }
     };
+
     getComments();
   }, [postId, fetchComments, location]);
 
@@ -252,12 +288,21 @@ const PostPage = () => {
                   )}
                 </div>
                 <hr />
-                {comments.map((comment) => (
-                  <div key={comment._id}>
-                    <Comment comment={comment} deleteAction={deleteContent} />
-                    <hr />
+                {comments.length > 0 ? (
+                  <div>
+                    {comments.map((comment) => (
+                      <div key={comment._id}>
+                        <Comment
+                          comment={comment}
+                          deleteAction={deleteContent}
+                        />
+                        <hr />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <Empty size="small"/>
+                )}
               </div>
             </div>
           </div>
