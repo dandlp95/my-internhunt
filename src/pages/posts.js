@@ -165,9 +165,10 @@ const Posts = () => {
       const res = await isAuth();
       if (res.err) {
         if (res.err === "server down") {
-          setIsServerDown(true);
+          alert("Our servers are down");
+          navigate("/");
         } else {
-          alert("Please log in");
+          alert("Please login");
           navigate("/");
         }
       } else {
