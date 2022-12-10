@@ -9,12 +9,12 @@ const PasswordInput = (props) => {
     <div className="password-input-main">
       <div className="new-password-container">
         <input
-          type="text"
+          type="password"
           placeholder="Enter your new password"
           onChange={(e) => setNewPassword(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           placeholder="Enter your new password again"
           onChange={(e) => setNewPasswordConfirm(e.target.value)}
         />

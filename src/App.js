@@ -21,13 +21,17 @@ const App = () => {
 
   useEffect(() => {
     const isLoggedIn = async () => {
-      const response = await isAuth();
-      if (response.ok) {
-        const userData = localStorage.getItem("userData");
-        const userDataJson = JSON.parse(userData);
-        const major = userDataJson.major;
-        const urlQuery = `?major=${encodeURI(major)}`;
-        navigate(`/posts${urlQuery}`);
+      try {
+        const response = await isAuth();
+        if (response.ok) {
+          const userData = localStorage.getItem("userData");
+          const userDataJson = JSON.parse(userData);
+          const major = userDataJson.major;
+          const urlQuery = `?major=${encodeURI(major)}`;
+          navigate(`/posts${urlQuery}`);
+        }
+      } catch (err) {
+        setFail("Our servers are down.")
       }
     };
     isLoggedIn();
@@ -39,10 +43,17 @@ const App = () => {
         method: "GET",
         headers: { "Content-type": "application/json" },
       };
-      const response = await fetch(getApiRoot() + "/majors", options);
-      if (response.ok) {
-        const majors = await response.json();
-        setMajorsList(majors);
+      try {
+        const response = await fetch(getApiRoot() + "/majors", options);
+        if (response.ok) {
+          const majors = await response.json();
+          setMajorsList(majors);
+        } else {
+          const serverError = await response.json();
+          setFail(`Failed to fetch majors: ${serverError.message}`);
+        }
+      } catch (err) {
+        setFail("Failed to connect to the server");
       }
     };
     getMajors();
