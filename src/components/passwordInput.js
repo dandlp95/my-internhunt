@@ -21,7 +21,7 @@ const PasswordInput = (props) => {
       </div>
       <div className="buttons">
         <button
-          onClick={(e) => props.passwordChange(newPassword, newPasswordConfirm)}
+          onClick={() => props.passwordChange(newPassword, newPasswordConfirm)}
         >
           Change Password
         </button>

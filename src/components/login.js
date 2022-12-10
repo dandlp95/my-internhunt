@@ -6,10 +6,8 @@ import { useNavigate, Link } from "react-router-dom";
 import "./login.css";
 import FailMessage from "./failMessage";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import jwtDecode from "jwt-decode";
 
 function Login(props) {
-  const [userToken, setUserToken] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fail, setFail] = useState(false);

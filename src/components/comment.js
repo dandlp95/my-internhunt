@@ -66,6 +66,9 @@ const Comment = (props) => {
     if (response.ok) {
       const responseJson = await response.json();
       setComment(responseJson);
+    } else {
+      const backendError = await response.json();
+      alert(backendError.message);
     }
   };
 
@@ -91,7 +94,8 @@ const Comment = (props) => {
       if (response.ok) {
         setVoteCount(voteCount + userVote);
       } else {
-        console.log();
+        const backendError = await response.json();
+        alert(backendError.message);
       }
     }
     setRerenderChild(!rerenderChild);

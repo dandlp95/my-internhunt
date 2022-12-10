@@ -9,12 +9,11 @@ const ChangeMajor = () => {
   if (!userData.major || userData.major === "null") {
     localStorageMajor = null;
   } else {
-    localStorageMajor = userData.major
+    localStorageMajor = userData.major;
   }
 
   const [major, setMajor] = useState(localStorageMajor);
   const [edit, setEdit] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState(false);
   const [majorsList, setMajorsList] = useState([]);
 
   const requestMajorChange = async () => {
@@ -28,7 +27,8 @@ const ChangeMajor = () => {
     if (response.ok) {
       alert("Your major has been changed.");
     } else {
-      setConfirmationMessage("An error has ocurred.");
+      const backendError = await response.json();
+      alert(backendError.message);
     }
     setEdit(false);
   };
@@ -45,13 +45,14 @@ const ChangeMajor = () => {
         headers: { "Content-type": "application/json" },
       };
       const response = await fetch(getApiRoot() + "/majors", options);
-      const majors = await response.json();
-
+      var majors;
+      if (response.ok) {
+        majors = await response.json();
+      }
       setMajorsList(majors);
     };
     getMajors();
   }, [edit]); // Use this use effect to get a list of majors and add it to the drop down menu
-  console.log("majors list: ", majorsList);
   if (!edit) {
     return (
       <div className="change-major-main">

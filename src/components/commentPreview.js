@@ -44,4 +44,3 @@ const CommentPreview = (props) => {
 };
 
 export default CommentPreview;
-//<Link to={`/post`}>{postTitle}</Link>

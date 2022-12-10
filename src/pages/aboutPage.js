@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import Header from "../components/header";
-import { isAuth } from "../utils/isLoggedIn";
 import about from "../utils/about.json";
 import "./aboutPage.css#";
 
