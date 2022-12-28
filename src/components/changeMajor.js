@@ -101,8 +101,8 @@ const ChangeMajor = () => {
             ))}
           </datalist>
           <div className="change-major-button-container">
-            <button onClick={(e) => requestMajorChange()}>Save</button>
-            <button onClick={(e) => handleCancel()}>Cancel</button>
+            <button onClick={() => requestMajorChange()}>Save</button>
+            <button onClick={() => handleCancel()}>Cancel</button>
           </div>
         </div>
       </div>

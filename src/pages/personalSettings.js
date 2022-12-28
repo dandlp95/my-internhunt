@@ -6,8 +6,9 @@ import Header from "../components/header";
 import "./personalSettings.css";
 import ChangeMajor from "../components/changeMajor";
 import UserManager from "../components/userManager";
+import DeleteAccount from "../components/deleteAccount";
 
-const PersonalSettings = (props) => {
+const PersonalSettings = () => {
   const [user, setUser] = useState();
   const [oldPassword, setOldPassword] = useState();
   const [oldPasswordExists, setOldPasswordExists] = useState(false);
@@ -45,7 +46,7 @@ const PersonalSettings = (props) => {
           const response = await backendCaller.protectedBody();
           if (response.ok) {
             setIsErr(false);
-            setOldPassword("")
+            setOldPassword("");
             setNewPassword("");
             setNewPasswordConfirm("");
             setConfirmationResponse(
@@ -188,6 +189,9 @@ const PersonalSettings = (props) => {
           <div className="change-major-ui-container">
             <ChangeMajor />
           </div>
+          <div className="">
+            <DeleteAccount />
+          </div>
           {isAdmin && (
             <div>
               <UserManager />
@@ -229,6 +233,9 @@ const PersonalSettings = (props) => {
           </div>
           <div className="change-major-ui-container">
             <ChangeMajor />
+          </div>
+          <div>
+            <DeleteAccount />
           </div>
           {isAdmin && (
             <div>
